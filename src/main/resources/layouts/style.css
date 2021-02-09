@@ -1,0 +1,8 @@
+.label{
+    -fx-text-fill: beige;
+    -fx-font-size: 25px;
+    -fx-background-color: transparent;
+}
+.background{
+    -fx-background-color: darkslategray;
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<GridPane alignment="center" hgap="10" prefHeight="468.0" prefWidth="588.0" stylesheets="@style.css" vgap="10" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Controller">
+   <columnConstraints>
+      <ColumnConstraints />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints />
+   </rowConstraints>
+   <children>
+      <BorderPane prefHeight="742.0" prefWidth="854.0" styleClass="background">
+         <center>
+            <VBox alignment="CENTER" prefHeight="428.0" prefWidth="577.0" styleClass="background" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="54.0" prefWidth="82.0" styleClass="label" text="Join" />
+                  <Button fx:id="hostButton" mnemonicParsing="false" onAction="#host" styleClass="label" text="host" />
+               </children>
+            </VBox>
+         </center>
+      </BorderPane>
+   </children>
+</GridPane>
