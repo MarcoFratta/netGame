@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<GridPane alignment="center" hgap="10" prefHeight="468.0" prefWidth="588.0" stylesheets="@style.css" vgap="10" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.Controller">
+<GridPane alignment="center" hgap="10" prefHeight="468.0" prefWidth="588.0" stylesheets="@style.css" vgap="10" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.MenuController">
    <columnConstraints>
       <ColumnConstraints />
    </columnConstraints>
@@ -19,11 +22,36 @@
          <center>
             <VBox alignment="CENTER" prefHeight="428.0" prefWidth="577.0" styleClass="background" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="54.0" prefWidth="82.0" styleClass="label" text="Join" />
-                  <Button fx:id="hostButton" mnemonicParsing="false" onAction="#host" styleClass="label" text="host" />
+                  <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="54.0" prefWidth="82.0" text="Join">
+                     <styleClass>
+                        <String fx:value="label" />
+                        <String fx:value="buttons" />
+                     </styleClass>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin></Button>
+                  <Button fx:id="hostButton" mnemonicParsing="false" onAction="#host" text="host">
+                     <styleClass>
+                        <String fx:value="buttons" />
+                        <String fx:value="label" />
+                     </styleClass></Button>
                </children>
             </VBox>
          </center>
+         <top>
+            <Label fx:id="numPlayerBox" text="3 players connected" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets top="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <bottom>
+            <Label fx:id="ipBox" text="36.24.0.1" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="20.0" />
+               </BorderPane.margin>
+            </Label>
+         </bottom>
       </BorderPane>
    </children>
 </GridPane>

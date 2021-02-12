@@ -8,8 +8,8 @@ import java.util.List;
 public class HandImpl implements Hand{
 
 
-    private List<Card> hand;
-    private int size;
+    private final List<Card> hand;
+    private final int size;
 
     public HandImpl(List<Card> hand, int size) {
         this.hand = new ArrayList<>(hand);
@@ -22,7 +22,7 @@ public class HandImpl implements Hand{
 
     @Override
     public List<Card> getHand() {
-        return List.copyOf(hand);
+        return hand;
     }
 
     @Override
@@ -34,8 +34,8 @@ public class HandImpl implements Hand{
     }
 
     @Override
-    public void removeCard(Card c) {
-        this.hand.remove(c);
+    public Card removeCard(int c) {
+        return this.hand.remove(c);
     }
 
     public void sort(){
@@ -44,6 +44,6 @@ public class HandImpl implements Hand{
 
     @Override
     public String toString() {
-        return "Hand(3)>"+ hand;
+        return "Hand(3)>"+ hand.toString();
     }
 }

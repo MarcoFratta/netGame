@@ -14,12 +14,6 @@ public class Main extends Application {
         primaryStage.setTitle("Hello World");
         primaryStage.setScene(new Scene(root, 300, 275));
         primaryStage.show();
-        /*GameServer gameServer = new GameServer();
-        gameServer.start();
-        /*GameClient client = new GameClient(InetAddress.getLocalHost(),6200);
-        client.start();
-
-         */
     }
 
     public static void main(String[] args) {

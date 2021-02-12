@@ -1,6 +1,5 @@
 package cards;
 
-import java.io.IOException;
 import java.util.Optional;
 
 public interface Deck {
@@ -10,9 +9,11 @@ public interface Deck {
 
     Optional<Card> drawCard();
 
-    Optional<Card> drawCard(String seme, int numero);
+    Optional<Card> drawCard(String seed, int number);
 
     int getDeckSize();
 
     int getLeftCardSize();
+
+    String getDeckType();
 }

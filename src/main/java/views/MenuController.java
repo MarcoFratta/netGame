@@ -1,46 +1,60 @@
 package views;
 
-import core.GameManager;
-import javafx.event.ActionEvent;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TextInputDialog;
-import net.MenuManager;
 
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import net.ClientManager;
+import net.HostManager;
+import net.Manager;
+import net.Utilities;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable {
+public class MenuController implements Initializable {
 
-
+    private static final String PLAYERS_MESSAGE = "PLayers connected:";
+    @FXML
     public Button hostButton;
-    private MenuManager manager;
+    @FXML
+    public Label numPlayerBox;
+    @FXML
+    private Label ipBox;
+    private Manager manager;
     private boolean hosting = false;
 
 
     public void join(ActionEvent actionEvent) {
-        TextInputDialog dialog = new TextInputDialog("Connect");
+        TextInputDialog dialog = new TextInputDialog("Localhost");
         dialog.setTitle("Connect to a host");
         dialog.setHeaderText("IP address");
         dialog.setContentText("Insert server address:");
-
         Optional<String> result = dialog.showAndWait();
 
-        result.ifPresent(address ->  manager.join(address));
+        result.ifPresent(address -> {
+            ((Runnable)() ->{
+                manager=new ClientManager(this);
+                manager.action(address);
+            }).run();
 
+        });
     }
 
     public void host(ActionEvent actionEvent) {
         if(!hosting){
             hosting = true;
-            manager.host();
+            manager = new HostManager(this);
+            manager.action(null);
             this.hostButton.setText("Hosting...\n(click to stop hosting)");
         }else {
             hosting = false;
-            manager.stopHosting();
+            manager.stopAction();
             this.hostButton.setText("Host");
         }
     }
@@ -48,7 +62,8 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        manager = new MenuManager(this);
+        this.ipBox.setText(Utilities.getIp());
+        notifyClientsUpdate(0);
     }
 
     public void notifyError(String s) {
@@ -59,7 +74,10 @@ public class Controller implements Initializable {
         alert.showAndWait();
     }
 
-    public void serverStarted() {
-        
+    public void notifyClientsUpdate(int size) {
+        Platform.runLater(() -> numPlayerBox.setText(PLAYERS_MESSAGE+size));
+    }
+
+    public void notifyServerStarted() {
     }
 }

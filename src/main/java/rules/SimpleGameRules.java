@@ -1,5 +1,6 @@
 package rules;
 
+import core.NetPlayer;
 import core.Player;
 
 import java.nio.file.Path;
@@ -11,15 +12,15 @@ public class SimpleGameRules implements GameRules{
     public static final int DEF_MIN_PLAYERS = 2;
     public static final int DEF_MAX_PLAYERS = 4;
     public static final int DEF_HAND_SIZE = 3;
-    public static final int DEF_FIELD_SIZE = 3;
+    public static final int DEF_FIELD_SIZE = 4;
     public static final int DEF_DECK_SIZE = 40;
 
     private final int maxPlayers,minPlayers,handSize,deckSize,fieldSize;
     private final String deckPath;
-    private final Function<List<Player>,Player> firstPlayer;
+    private final Function<List<NetPlayer>,Player> firstPlayer;
 
     public SimpleGameRules(int maxPlayers, int minPlayers, int handSize, String deckPath,
-                           int deckSize, int fieldSize, Function<List<Player>,Player> function) {
+                           int deckSize, int fieldSize, Function<List<NetPlayer>,Player> function) {
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
         this.handSize = handSize;
@@ -58,8 +59,8 @@ public class SimpleGameRules implements GameRules{
     }
 
     @Override
-    public Function<List<Player>, Player> getFirstPlayer() {
-        return null;
+    public Function<List<NetPlayer>, Player> getFirstPlayer() {
+        return this.firstPlayer;
     }
 
     @Override

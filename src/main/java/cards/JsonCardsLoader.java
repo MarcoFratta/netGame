@@ -14,32 +14,37 @@ public class JsonCardsLoader {
 
     public static final String PACKAGE = "/img_carte/";
 
-    public static void loadFromPath(String path , List<Card> list){
+    public static String loadFromPath(String path , List<Card> list){
+        String cardType = null;
         try {
+            System.out.println("Json path->"+path);
             File file = new File(path);
             JSONParser parser = new JSONParser();
             Object obj = parser.parse(new FileReader(file));
             JSONObject jsonObject = (JSONObject) obj;
-            String cardType = (String) jsonObject.get("value");
+             cardType = (String) jsonObject.get("value");
             JSONArray js = (JSONArray) (jsonObject.get("seeds"));
             for (JSONObject object : (Iterable<JSONObject>) js) {
                 String seed = (String) object.get("seed");
                 JSONArray cards = (JSONArray) (object.get("cards"));
                 for(JSONObject card : (Iterable<JSONObject>) cards ){
                     boolean c = Boolean.parseBoolean((String) card.get("c"));
+                    boolean b = Boolean.parseBoolean((String) card.get("b"));
                     int v = Integer.parseInt((String) card.get("v"));
                     int h = Integer.parseInt((String) card.get("h"));
                     int d = Integer.parseInt((String) card.get("d"));
                     int id = Integer.parseInt((String) card.get("id"));
                     String n = (String) card.get("value");
                     URL url = Deck.class.getResource(PACKAGE+cardType+"/"+n+"_"+seed+".png");
-                    list.add(new Card(n,id,new Image(url.toString()),h,v,d,c));
+                    list.add(new CardImpl(seed,n,id,new Image(url.toString()),h,v,d,c,b));
                 }
             }
         } catch (Exception e) {
-            System.out.println("Error loading deck file");
+            e.printStackTrace();
+            System.out.println("Error loading deck file"+path);
         }
 
+        return cardType;
     }
 
 

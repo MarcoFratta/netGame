@@ -6,3 +6,16 @@
 .background{
     -fx-background-color: darkslategray;
 }
+.buttons{
+    -fx-border-color: lightseagreen;
+}
+.grid{
+    -fx-alignment: center;
+    -fx-background-color: beige;
+}
+.imageView{
+    -fx-alignment: center;
+}
+.pane{
+    -fx-alignment: center;
+}

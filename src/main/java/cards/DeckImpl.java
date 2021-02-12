@@ -10,22 +10,20 @@ import java.util.*;
 
 public class DeckImpl implements Deck {
     public final static int DEFUALT_CARDS_NUMBER = 40;
-    private final String  deckPath;
-    private List<Card> cards;
+    private final String deckType;
+    private List<Card> cardImpls;
     private final int size;
 
     public DeckImpl(String c, int size) throws IOException {
         this.size = size;
-        this.deckPath = c;
-        this.cards = new ArrayList<>();
-        JsonCardsLoader.loadFromPath(deckPath,this.cards);
-        //generate();
-        System.out.println(cards);
+        this.cardImpls = new ArrayList<>();
+        this.deckType = JsonCardsLoader.loadFromPath(c,this.cardImpls);
+        System.out.println(cardImpls);
     }
-    //algoritmo shuffle
+
     @Override
     public void shuffle() {
-        Collections.shuffle(cards);
+        Collections.shuffle(cardImpls);
     }
 
     @Override
@@ -33,12 +31,12 @@ public class DeckImpl implements Deck {
         if (getLeftCardSize() == 0) {
             return Optional.empty();
         }
-        return Optional.of(cards.remove(getLeftCardSize() - 1));
+        return Optional.of(cardImpls.remove(getLeftCardSize() - 1));
     }
 
     @Override
     public Optional<Card> drawCard(String seed, int number) {
-        return cards.stream().filter(c -> c.getNumber() ==number && c.getSeed().equals(seed)).findAny();
+        return cardImpls.stream().filter(c -> c.getNumber() ==number && c.getSeed().equals(seed)).findAny();
     }
 
     @Override
@@ -48,7 +46,12 @@ public class DeckImpl implements Deck {
 
     @Override
     public int getLeftCardSize() {
-        return this.cards.size();
+        return this.cardImpls.size();
+    }
+
+    @Override
+    public String getDeckType() {
+        return deckType;
     }
 
 }

@@ -1,5 +1,6 @@
 package rules;
 
+import core.NetPlayer;
 import core.Player;
 
 import java.util.List;
@@ -11,6 +12,6 @@ public interface GameRules {
     int getMinPLayers();
     int getDeckSize();
     String getDeckPath();
-    Function<List<Player>,Player> getFirstPlayer();
+    Function<List<NetPlayer>,Player> getFirstPlayer();
     int getFieldSize();
 }
