@@ -3,10 +3,10 @@ package packets;
 import cards.Card;
 import core.Pair;
 
-import java.util.Optional;
-
 public class AddedFromHandPacket implements Packet {
 
+
+    private static final long serialVersionUID = -4287700987698357032L;
     private final Card card;
     private final Pair<Integer, Integer> dest;
 
@@ -16,10 +16,10 @@ public class AddedFromHandPacket implements Packet {
     }
 
     public Card getCard() {
-        return card;
+        return this.card;
     }
 
     public Pair<Integer, Integer> getDest() {
-        return dest;
+        return this.dest;
     }
 }

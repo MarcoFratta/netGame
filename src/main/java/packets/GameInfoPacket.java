@@ -1,13 +1,12 @@
 package packets;
 
 import core.LocalPlayer;
-import core.Player;
 
 import java.util.List;
-import java.util.Locale;
 
 public class GameInfoPacket implements Packet {
 
+    private static final long serialVersionUID = -8508392439592816402L;
     private final List<LocalPlayer> players;
     private final String deckType;
     private final int deckSize;
@@ -26,26 +25,26 @@ public class GameInfoPacket implements Packet {
     }
 
     public String getDeckType(){
-        return deckType;
+        return this.deckType;
     }
 
     public List<LocalPlayer> getPlayers() {
-        return players;
+        return this.players;
     }
 
     public int getDeckSize() {
-        return deckSize;
+        return this.deckSize;
     }
 
     public int getHandSize() {
-        return handSize;
+        return this.handSize;
     }
 
     public int getFieldSize() {
-        return fieldSize;
+        return this.fieldSize;
     }
 
     public int getDestPlayerId() {
-        return destPlayerId;
+        return this.destPlayerId;
     }
 }

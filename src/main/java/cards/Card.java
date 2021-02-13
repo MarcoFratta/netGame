@@ -1,63 +1,59 @@
 package cards;
 
-import javafx.scene.image.Image;
-
 import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.Map;
 import java.util.Objects;
 
 public class Card implements Serializable {
 
-    protected final String seed;
-    protected final String name;
-    protected final int number;
-    protected final MovementManager movementManager;
+    private static final long serialVersionUID = -4625278940046029434L;
+    protected final transient String seed;
+    protected final transient String name;
+    protected final transient int number;
+    protected final transient MovementManager movementManager;
+    protected final int id;
 
     public Card(final String s,final String name, final int n, final int h ,
-                final int v , final int d, final boolean c, final boolean b )
+                final int v , final int d, final boolean c, final boolean b,int id )
     {
         this.name = name;
         this.seed =s;
         this.number=n;
-        movementManager = new MovementManager(h,v,d,c,b);
+        this.id = id;
+        this.movementManager = new MovementManager(h,v,d,c,b);
+    }
 
 
-    }
-    public Card()
-    {
-        this("","",0,0,0,0,false,true);
-    }
     public String getSeed()
     {
-        return seed;
+        return this.seed;
     }
     public int getNumber()
     {
-        return number;
+        return this.number;
+    }
+    public int getId() {
+        return this.id;
+    }
+    public MovementManager getMovementManager(){
+        return this.movementManager;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return number == card.number && seed.equals(card.seed);
+        return this.id == card.getId();
     }
-
     @Override
     public int hashCode() {
-        return Objects.hash(seed, number);
+        return Objects.hash(this.seed, this.number, this.id);
     }
-
     @Override
     public String toString()
     {
-        return number +" "+ seed;
+        return this.number +" "+ this.seed +" id->"+ this.id;
     }
 
-    public MovementManager getMovementManager(){
-        return this.movementManager;
-    }
 
 }

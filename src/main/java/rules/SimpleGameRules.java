@@ -3,7 +3,6 @@ package rules;
 import core.NetPlayer;
 import core.Player;
 
-import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Function;
 

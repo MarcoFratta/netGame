@@ -2,36 +2,32 @@ package views;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-
-import static cards.JsonCardsLoader.PACKAGE;
 
 
 public class CardBox extends StackPane {
 
     public static final int padding = 10;
-    private ImageView imageView;
+    private final ImageView imageView;
 
     public CardBox(double v){
         System.out.println("v->"+v);
         this.setAlignment(Pos.CENTER);
         this.setPadding(new Insets(padding,padding,padding,padding));
-        unselect();
+        this.unselect();
 
         this.imageView = new ImageView();
         //
         // this.imageView = new ImageView(getClass().getResource("/img_carte/napoletane/asso_bastoni.png").toString());
-        this.getChildren().add(imageView);
+        this.getChildren().add(this.imageView);
         this.imageView.setFitHeight(v-(v/2));
         this.imageView.setPreserveRatio(true);
         this.imageView.setFitWidth(v-(v/2));
         //this.imageView.setStyle("-fx-alignment: CENTER");
-        super.setMaxWidth(imageView.getFitWidth());
-        super.setMaxHeight(imageView.getFitHeight());
+        super.setMaxWidth(this.imageView.getFitWidth());
+        super.setMaxHeight(this.imageView.getFitHeight());
 
 
     }

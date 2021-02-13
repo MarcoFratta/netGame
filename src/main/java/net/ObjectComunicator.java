@@ -1,8 +1,5 @@
 package net;
 
-import packets.Packet;
-
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
@@ -17,20 +14,20 @@ public class ObjectComunicator implements Comunicator{
     }
 
     @Override
-    public void send(Object b) {
+    public  void send(Object b) {
         try{
-            output.writeObject(b);
+            this.output.writeObject(b);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     @Override
-    public Object receive() {
+    public  Object receive() {
         Object p = null;
         try {
-             p =  input.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+             p = this.input.readObject();
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return p;

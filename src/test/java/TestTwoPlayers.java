@@ -1,15 +1,3 @@
-
-import core.*;
-import net.Main;
-import org.junit.Test;
-import rules.SimpleGameRules;
-
-import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
-import static org.junit.Assert.*;
-
 public class TestTwoPlayers {
 
 

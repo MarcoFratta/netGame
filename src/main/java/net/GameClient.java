@@ -18,7 +18,7 @@ public class GameClient extends Thread{
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
-    private ClientManager manager;
+    private final ClientManager manager;
 
     public GameClient(InetAddress address, ClientManager menuManager){
         this.address = address;
@@ -28,17 +28,17 @@ public class GameClient extends Thread{
     @Override
     public void run() {
         try {
-            connect();
+            this.connect();
         } catch (IOException e) {
             System.out.println("Connessione fallita");
         }
-        waitForStart();
+        this.waitForStart();
     }
 
     private void waitForStart() {
         try {
-            GameInfoPacket s = (GameInfoPacket) input.readObject();
-            manager.startMatch(s,input,output);
+            GameInfoPacket s = (GameInfoPacket) this.input.readObject();
+            this.manager.startMatch(s, this.input, this.output);
 
             System.out.println("message received ->"+s.getDeckType());
         } catch (IOException e) {
@@ -51,9 +51,9 @@ public class GameClient extends Thread{
 
     private void connect() throws IOException {
 
-            serverSocket = new Socket(address,port);
-            output = new ObjectOutputStream(serverSocket.getOutputStream());
-            input = new ObjectInputStream(serverSocket.getInputStream());
+        this.serverSocket = new Socket(this.address,port);
+        this.output = new ObjectOutputStream(this.serverSocket.getOutputStream());
+        this.input = new ObjectInputStream(this.serverSocket.getInputStream());
             System.out.println("Connessione riuscita");
 
     }

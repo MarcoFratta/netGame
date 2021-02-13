@@ -3,9 +3,9 @@ package core;
 import net.Comunicator;
 
 import java.net.Socket;
-import java.util.Objects;
 
 public class NetPlayer extends LocalPlayer{
+    private static final long serialVersionUID = 5506535315042162996L;
     private final Socket socket;
     private final Comunicator comunicator;
 
@@ -16,7 +16,7 @@ public class NetPlayer extends LocalPlayer{
     }
 
     public Socket getSocket() {
-        return socket;
+        return this.socket;
     }
 
     public Comunicator getComunicator() {

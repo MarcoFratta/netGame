@@ -1,12 +1,13 @@
 package cards;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface Hand {
 
-    public List<Card> getHand();
-    public void addCard(Card c);
-    public Card removeCard(int c);
-
-
+    List<Optional<Card>> getHand();
+    void addCard(Card c,int pos);
+    Optional<Card> removeCard(int c);
+    Optional<Card>removeCardFromId(int id);
+    void addCard(Card card);
 }

@@ -33,10 +33,11 @@ public class JsonCardsLoader {
                     int v = Integer.parseInt((String) card.get("v"));
                     int h = Integer.parseInt((String) card.get("h"));
                     int d = Integer.parseInt((String) card.get("d"));
+                    int num = Integer.parseInt((String) card.get("num"));
                     int id = Integer.parseInt((String) card.get("id"));
                     String n = (String) card.get("value");
                     URL url = Deck.class.getResource(PACKAGE+cardType+"/"+n+"_"+seed+".png");
-                    list.add(new CardImpl(seed,n,id,new Image(url.toString()),h,v,d,c,b));
+                    list.add(new CardImpl(seed,n,num,new Image(url.toString()),h,v,d,c,b,id));
                 }
             }
         } catch (Exception e) {

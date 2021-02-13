@@ -11,8 +11,6 @@ import net.HostManager;
 import net.Manager;
 import net.Utilities;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -38,23 +36,23 @@ public class MenuController implements Initializable {
         Optional<String> result = dialog.showAndWait();
 
         result.ifPresent(address -> {
-            ((Runnable)() ->{
-                manager=new ClientManager(this);
-                manager.action(address);
-            }).run();
+            new Thread(() ->{
+                Manager m=new ClientManager(this);
+                m.action(address);
+            },"Client manager").start();
 
         });
     }
 
     public void host(ActionEvent actionEvent) {
-        if(!hosting){
-            hosting = true;
-            manager = new HostManager(this);
-            manager.action(null);
+        if(!this.hosting){
+            this.hosting = true;
+            this.manager = new HostManager(this);
+            this.manager.action(null);
             this.hostButton.setText("Hosting...\n(click to stop hosting)");
         }else {
-            hosting = false;
-            manager.stopAction();
+            this.hosting = false;
+            this.manager.stopAction();
             this.hostButton.setText("Host");
         }
     }
@@ -63,7 +61,7 @@ public class MenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         this.ipBox.setText(Utilities.getIp());
-        notifyClientsUpdate(0);
+        this.notifyClientsUpdate(0);
     }
 
     public void notifyError(String s) {
@@ -75,7 +73,7 @@ public class MenuController implements Initializable {
     }
 
     public void notifyClientsUpdate(int size) {
-        Platform.runLater(() -> numPlayerBox.setText(PLAYERS_MESSAGE+size));
+        Platform.runLater(() -> this.numPlayerBox.setText(PLAYERS_MESSAGE+size));
     }
 
     public void notifyServerStarted() {

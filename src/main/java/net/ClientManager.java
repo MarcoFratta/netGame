@@ -19,7 +19,7 @@ import java.util.concurrent.*;
 
 public class ClientManager implements Manager {
     public static final String LAYOUT_PATH = "/layouts/game.fxml";
-    private MenuController view;
+    private final MenuController view;
     private GameClient client;
     private List<LocalPlayer> players;
 
@@ -33,7 +33,7 @@ public class ClientManager implements Manager {
             this.client = new GameClient(InetAddress.getByName(args), this);
             this.client.start();
         } catch (UnknownHostException e) {
-            view.notifyError("No match found");
+            this.view.notifyError("No match found");
         }
     }
 
@@ -49,10 +49,10 @@ public class ClientManager implements Manager {
         new Thread(()-> {
             final FutureTask<GameController> query = new FutureTask<>(new Callable<>() {
                 @Override
-                public GameController call() throws Exception {
+                public GameController call() {
                     Stage stage = new Stage();
                     FXMLLoader loader;
-                    loader = new FXMLLoader(getClass().getResource(LAYOUT_PATH));
+                    loader = new FXMLLoader(this.getClass().getResource(LAYOUT_PATH));
                     stage.setTitle("Game");
                     try {
                         stage.setScene(new Scene(loader.load()));
@@ -61,17 +61,14 @@ public class ClientManager implements Manager {
                     }
                     GameController view = loader.getController();
                     view.create(p, logic);
-                    logic.setController(view);
-                    stage.show();
+                    Platform.runLater(stage::show);
                     return view;
                 }
             });
             Platform.runLater(query);
             try {
                 logic.setController(query.get());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
+            } catch (InterruptedException | ExecutionException e) {
                 e.printStackTrace();
             }
             logic.startGame();

@@ -5,16 +5,12 @@ import net.Comunicator;
 import packets.*;
 import views.GameController;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class LocalLogic implements Logic {
 
-    private enum State{
-        HAND,FIELD
-    }
+    public static final int NO_HAND_SELECTED = -1;
 
 
     public static final String CARDS_PACKAGE = "/cards_file/";
@@ -24,24 +20,25 @@ public class LocalLogic implements Logic {
     private final Comunicator server;
     private final Deck deck;
     private final Field field;
+    private final List<Card> removedCards;
     private GameController controller;
     private boolean isMyTurn = false;
     private Player player;
     private Pair<Integer,Integer> selectedFieldCard;
-    private int selectedHandCard;
-
+    private int selectedHandCard = NO_HAND_SELECTED;
 
     public LocalLogic(GameInfoPacket packet,Comunicator server) {
         this.players = packet.getPlayers();
         this.server = server;
+        this.removedCards = new ArrayList<>();
         try {
-            this.player = players.stream().filter(p -> p.getId() == packet.getDestPlayerId())
+            this.player = this.players.stream().filter(p -> p.getId() == packet.getDestPlayerId())
                     .findAny().get();
         }catch (NoSuchElementException e){
             server.send(new ErrorPacket("id error"));
         }
         try{
-            String path = getClass().getResource(CARDS_PACKAGE +packet.getDeckType()+ FILE_TYPE).getFile();
+            String path = this.getClass().getResource(CARDS_PACKAGE +packet.getDeckType()+ FILE_TYPE).getFile();
             this.deck = new DeckImpl(path, packet.getDeckSize());
         }catch (Exception e){
             server.send(new ErrorPacket("deck error"));
@@ -52,136 +49,161 @@ public class LocalLogic implements Logic {
         this.field = new FieldImpl(packet.getFieldSize());
     }
 
-
     @Override
     public void startGame() {
-        System.out.println("Sending ready message "+player);
-        server.send(new ReadyForHandPacket(this.player.getId()));
-        waitForHand();
-        showHand();
-        waitForTurn();
+        System.out.println("Sending ready message "+ this.player);
+        this.server.send(new ReadyForHandPacket(this.player.getId()));
+        this.waitForHand();
+        this.showHand();
+        this.waitForTurn();
     }
-
     private void showHand() {
-        for(int i = 0 ; i < hand.getHand().size();i++){
-            controller.addHandCard(hand.getHand().get(i),i);
+        for(int i = 0; i < this.hand.getHand().size(); i++){
+            this.controller.addHandCard(this.hand.getHand().get(i),i);
         }
 
     }
-
     private void waitForHand() {
-        System.out.println("Waiting for hand "+player.toString());
-        Object p = server.receive();
+        System.out.println("Waiting for hand "+ this.player.toString());
+        Object p = this.server.receive();
         if(p instanceof HandPacket){
             List<Card> cards = ((HandPacket) p).getCards();
-            cards.forEach(c ->{
+            int index = 0;
+            for (Card c : cards) {
                 try {
-                    Card card = deck.drawCard(c.getSeed(), c.getNumber()).get();
-                    hand.addCard(card);
-                }catch (NoSuchElementException e){
+                    Card card = this.deck.drawCard(c.getId()).get();
+                    this.hand.addCard(card,index++);
+                } catch (NoSuchElementException e) {
                     System.out.println("starting hand error");
                 }
-            });
+            }
         }
     }
-
     public void handTick(int pos) {
-        selectedHandCard = pos;
-        controller.selectCells(getValidCells(State.HAND));
+        if(this.selectedHandCard!=pos) {
+            this.selectedHandCard = pos;
+            this.unSelectField();
+            this.controller.selectHand(pos);
+            this.controller.clearFieldSelections();
+            this.hand.getHand().get(this.selectedHandCard).ifPresent(c -> this.controller.selectCells(this.getValidCells(State.HAND)));
+        } else {
+            this.unselectedHand();
+            this.controller.clearHandSelections();
+        }
     }
-
     public void unselectedHand(){
-        selectedHandCard = -1;
+        this.selectedHandCard = NO_HAND_SELECTED;
     }
     public void unSelectField(){
-        selectedFieldCard = null;
+        this.selectedFieldCard = null;
     }
-
     public void fieldTick(Pair<Integer,Integer> pos){
-        if(selectedHandCard!=-1){ // want to move from hand to field
-            if(isValid(pos,State.HAND)){
-                field.addCard(pos,hand.getHand().get(selectedHandCard));
-                System.out.println("Sending -> "+player+"->hand->"+pos);
-                server.send(new MoveFromHandPacket(selectedHandCard,pos));
-                moveCardFromHand(pos);
-                adjustView();
+        //System.out.println("BEOFRE FIELD CLICK -> "+this.selectedHandCard+" ->"+this.selectedFieldCard);
+        if(this.selectedHandCard!= NO_HAND_SELECTED){ // want to move from hand to field
+            if(this.isValid(pos,State.HAND)){
+                Card c = this.hand.removeCard(this.selectedHandCard).get();
+                this.server.send(new MoveFromHandPacket(c, pos));
+                this.moveFromHandToField(c,pos);
+                this.adjustView();
             }
-        }else if(selectedFieldCard!=null){ // want to move from field to field
-            if(isValid(pos,State.FIELD)){
-                System.out.println("Sending -> "+player+"->field->"+pos);
-                server.send(new MoveFromFieldPacket(selectedFieldCard,pos));
-                Optional<Card> c = field.getCard(selectedFieldCard);
-                c.ifPresent(card -> field.moveCard(card, pos));
-                moveCardOnField(pos);
-                adjustView();
+        }else if(this.selectedFieldCard!=null){ // want to move from field to field
+            if(this.isValid(pos,State.FIELD)){
+               // System.out.println("Moving from field to field >"+ this.player);
+                this.server.send(new MoveFromFieldPacket(new Pair<>(this.selectedFieldCard), pos));
+                this.moveFromFieldToField(pos);
+                this.adjustView();
+            }
+        } else if(!this.field.isFree(pos)){
+            this.unselectedHand(); // start field card selected
+                this.controller.clearHandSelections();
+                this.selectedFieldCard = pos;
+                this.controller.selectCells(this.getValidCells(State.FIELD));
+        }
+        //System.out.println("AFTER FIELD CLICK -> "+this.selectedHandCard+" ->"+this.selectedFieldCard);
+    }
+    private void moveFromFieldToField(Pair<Integer, Integer> pos) {
+        Optional<Card> f = this.field.moveCard(this.selectedFieldCard, pos);
+        f.ifPresent(card -> this.removedCards.add(f.get()));
+        this.moveCardOnField(pos);
+    }
+    private void moveFromHandToField(Card c,Pair<Integer, Integer> pos) {
+        this.field.addCard(pos,c);
+        this.addCardFromHandToView(pos);
+    }
+    private void adjustView() {
+        this.unSelectField();
+        this.unselectedHand();
+        this.isMyTurn = false;
+        this.controller.clearFieldSelections();
+        this.controller.setCanPlay(false);
+        this.waitForTurn();
 
-            }
-        } else {
-                selectedFieldCard = pos;
-                controller.selectCells(getValidCells(State.HAND));
+    }
+    private void addCardFromHandToView(Pair<Integer, Integer> pos) {
+        this.controller.addCardToField(this.field.getCard(pos).get(), pos);
+        if(this.selectedHandCard!=NO_HAND_SELECTED) {
+            this.controller.removeCardFromHand(this.selectedHandCard);
         }
     }
-
-    private void adjustView() {
-        unSelectField();
-        unselectedHand();
-        isMyTurn = false;
-        controller.setCanPlay(false);
-        waitForTurn();
-
-    }
-
-    private void moveCardFromHand(Pair<Integer, Integer> pos) {
-        controller.addCardToField(hand.getHand().get(selectedHandCard), pos);
-        controller.removeCardFromHand(selectedHandCard);
-    }
-
     private void moveCardOnField(Pair<Integer, Integer> pos) {
-        controller.removeCardFromField(pos);
-        controller.removeCardFromField(selectedFieldCard);
-        controller.addCardToField(field.getCard(selectedFieldCard).get(),selectedFieldCard);
+        this.controller.removeCardFromField(pos);
+        this.controller.removeCardFromField(this.selectedFieldCard);
+        this.controller.addCardToField(this.field.getCard(pos).get(),pos); // cant be null
     }
-
-
-    private List<Pair<Integer, Integer>> getValidCells(State hand) {
+    private List<Pair<Integer, Integer>> getValidCells(State state) {
         //field.moveCard()
+        try {
+            if (state.equals(State.HAND)) {
+                return this.hand.
+                        getHand().get(this.selectedHandCard).
+                        get().getMovementManager().getDestinations(state, new Pair<>(-1, -1), this.field.getSize())
+                        .stream().filter(this.field::isFree).collect(Collectors.toList());
+            } else if(state.equals(State.FIELD)){
+                List<Pair<Integer,Integer>> selectedCells = new ArrayList<>();
+                selectedCells.add(this.selectedFieldCard);
+                return selectedCells;
+            }
+        }catch (Exception e){
+            return Collections.emptyList();
+        }
         return Collections.emptyList();
     }
-
     private void waitForTurn() {
         new Thread(()->{
-        while(!isMyTurn) {
-            System.out.println("Waiting turn... "+player);
-            Object o = server.receive();
-            System.out.println("Packet received- "+player+" p->"+o);
+        while(!this.isMyTurn) {
+            System.out.println("Waiting turn... "+this.player);
+            Object o = this.server.receive();
+            System.out.println("Packet received- "+this.player+" p->"+o);
             if (o instanceof TurnPacket) {
                 this.isMyTurn = true;
-                controller.setCanPlay(true);
+                this.controller.setCanPlay(true);
             } else if (o instanceof AddedFromHandPacket) {
                 AddedFromHandPacket p = (AddedFromHandPacket) o;
-                controller.addCardToField(deck.drawCard(p.getCard().getSeed(),p.getCard().getNumber()).get(), p.getDest());
-                field.addCard(p.getDest(),p.getCard());
+                this.selectedHandCard = NO_HAND_SELECTED;
+                this.moveFromHandToField(this.deck.drawCard(p.getCard().getId()).get(),p.getDest());
+                this.unselectedHand();
+                this.unSelectField();
 
             } else if(o instanceof MoveFromFieldPacket){
                 MoveFromFieldPacket p = (MoveFromFieldPacket) o;
-                controller.removeCardFromField(p.getStart());
-                controller.removeCardFromField(p.getDest());
-                field.moveCard(field.getCard(p.getStart()).get(),p.getDest());
+                this.selectedFieldCard = p.getStart();
+                this.moveFromFieldToField(p.getDest());
+                this.unselectedHand();
+                this.unSelectField();
             }
         }
-        }).start();
+        },"Player"+this.player).start();
     }
-
     private boolean isValid(Pair<Integer, Integer> pos, State state) {
         if(state.equals(State.HAND)){
-            return (field.isFree(pos) &&
-                    hand.getHand().get(selectedHandCard).getMovementManager().canStartOn(pos, field.getSize()));
+            return (this.field.isFree(pos) &&
+                    this.hand.getHand().get(this.selectedHandCard).isPresent() &&
+                    this.hand.getHand().get(this.selectedHandCard).get().getMovementManager().canStartOn(pos, this.field.getSize()));
         }else if(state.equals(State.FIELD)){
-
+            return true;
         }
         return false;
     }
-
     public void setController(GameController view) {
         System.out.println("Controller set"+view);
         this.controller = view;

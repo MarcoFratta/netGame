@@ -9,7 +9,7 @@ public interface Deck {
 
     Optional<Card> drawCard();
 
-    Optional<Card> drawCard(String seed, int number);
+    Optional<Card> drawCard(int id);
 
     int getDeckSize();
 

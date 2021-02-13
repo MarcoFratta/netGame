@@ -9,21 +9,21 @@ import java.util.Optional;
 
 public class FieldImpl implements Field {
 
-    private Map<Pair<Integer,Integer>, Optional<Card>> field ;
+    private final Map<Pair<Integer,Integer>, Optional<Card>> field ;
     private final int size;
 
     public FieldImpl(int size){
         this.size = size;
-        field = new HashMap<>();
-        fillField();
+        this.field = new HashMap<>();
+        this.fillField();
 
     }
 
     @Override
     public void fillField() {
-        for(int i = 0 ; i < size ; i++){
-            for(int j = 0 ; j < size ; j++){
-                field.put(new Pair<>(j,i), Optional.empty());
+        for(int i = 0; i < this.size; i++){
+            for(int j = 0; j < this.size; j++){
+                this.field.put(new Pair<>(j,i), Optional.empty());
             }
         }
     }
@@ -34,14 +34,14 @@ public class FieldImpl implements Field {
     }
 
     @Override
-    public Optional<Card> moveCard(Card newCardImpl, Pair<Integer, Integer> newPosition){
-        if((newPosition.getX() < 0 || newPosition.getX() >= this.size) ||
-                (newPosition.getY() < 0 || newPosition.getY() >=this.size)){
+    public Optional<Card> moveCard(Pair<Integer, Integer> oldPos, Pair<Integer, Integer> newPos){
+        if((newPos.getX() < 0 || newPos.getX() >= this.size) ||
+                (newPos.getY() < 0 || newPos.getY() >=this.size)){
             throw new IllegalArgumentException();
         }
-        Optional<Card> tmp = field.get(newPosition);
-        field.replace(newPosition,Optional.of(newCardImpl));
-        return tmp;
+        Optional<Card> old = this.field.replace(oldPos,Optional.empty());
+        return this.field.replace(newPos,old);
+
     }
 
     @Override

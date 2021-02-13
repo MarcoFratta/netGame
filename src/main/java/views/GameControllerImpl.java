@@ -30,7 +30,6 @@ public class GameControllerImpl implements GameController {
     private Map<CardBox, Pair<Integer,Integer>> map;
     private LocalLogic logic;
     private List<CardBox> handCards;
-    private int selectedPos = -1;
     private boolean canPlay = false;
 
     @Override
@@ -42,40 +41,33 @@ public class GameControllerImpl implements GameController {
 
 
         EventHandler<MouseEvent> fieldHandler = cell ->{
-            if(canPlay) {
+            if(this.canPlay) {
                 CardBox clicked = (CardBox) cell.getSource();
-                 this.logic.fieldTick(map.get(clicked));
-                System.out.println("pos->" + map.get(clicked));
+                 this.logic.fieldTick(this.map.get(clicked));
+               // System.out.println("pos->" + map.get(clicked));
             }
         };
 
         EventHandler<MouseEvent> handHandler = cell ->{
-            if(canPlay) {
+            if(this.canPlay) {
                 CardBox clicked = (CardBox) cell.getSource();
-                System.out.println("pos->" + handCards.indexOf(clicked));
+                System.out.println("pos->" + this.handCards.indexOf(clicked));
                 int pos = this.handCards.indexOf(clicked);
-                if (pos == selectedPos) {
-                    selectedPos = -1;
-                } else {
-                    selectedPos = pos;
-                    ((LocalLogic) logic).handTick(selectedPos);
-
-                }
-                selectHand();
-                System.out.println("pos->" + handCards.indexOf(clicked));
+                ((LocalLogic) logic).handTick(pos);
+               // System.out.println("pos->" + handCards.indexOf(clicked));
             }
         };
 
 
         System.out.println("FIeld size->"+g.getFieldSize());
-        map = new HashMap<>(g.getFieldSize()*g.getFieldSize());
+        this.map = new HashMap<>(g.getFieldSize()*g.getFieldSize());
         IntStream.range(0,g.getFieldSize())
                 .forEach(i -> IntStream.range(0,g.getFieldSize())
                         .forEach(j ->{
                             CardBox c = new CardBox(boxSize);
                             fieldGrid.add(c,j,i);
                             c.setOnMouseClicked(fieldHandler);
-                            map.put(c,new Pair<>(j,i));
+                            this.map.put(c,new Pair<>(j,i));
                         }));
         this.grid.setCenter(fieldGrid);
 
@@ -85,29 +77,27 @@ public class GameControllerImpl implements GameController {
             CardBox c = new CardBox(boxSize);
             handGrid.add(c,a,0);
             c.setOnMouseClicked(handHandler);
-            handCards.add(a,c);
+            this.handCards.add(a,c);
         });
 
         this.grid.setBottom(handGrid);
     }
 
-    private void selectHand() {
+    public void selectHand(int position) {
         this.handCards.forEach(CardBox::unselect);
-        if(selectedPos != -1){
-            this.handCards.get(selectedPos).select();
-        }
+        this.handCards.get(position).select();
     }
 
     @Override
-    public void addHandCard(Card c, int position){
-        Platform.runLater(()->this.handCards.get(position).setImage(((CardImpl)c).getImage()));
+    public void addHandCard(Optional<Card> card, int position){
+        Platform.runLater(()->card.ifPresent(c->this.handCards.get(position).setImage(((CardImpl)c).getImage())));
     }
 
     @Override
     public void addCardToField(Card card, Pair<Integer,Integer> pos) {
         Platform.runLater(()->{
-            System.out.println("Adding card to"+pos);
-         map.keySet().stream().filter(c -> map.get(c).equals(pos))
+           // System.out.println("Adding card to"+pos);
+            this.map.keySet().stream().filter(c -> this.map.get(c).equals(pos))
                 .findAny().get().setImage(((CardImpl) card).getImage());
         });
     }
@@ -130,7 +120,7 @@ public class GameControllerImpl implements GameController {
         alert.setContentText("exit:");
         alert.showAndWait();
 
-        Stage stage = (Stage) grid.getScene().getWindow();
+        Stage stage = (Stage) this.grid.getScene().getWindow();
         stage.close();
 
     }
@@ -138,22 +128,30 @@ public class GameControllerImpl implements GameController {
     @Override
     public void selectCells(List<Pair<Integer, Integer>> cells){
         Platform.runLater(()->this.map.keySet().stream()
-                .filter(b -> cells.contains(map.get(b)))
+                .filter(b -> cells.contains(this.map.get(b)))
                 .forEach(CardBox::select));
     }
     @Override
-    public void clearSelections(){
+    public void clearFieldSelections(){
         Platform.runLater(()->this.map.keySet().forEach(CardBox::unselect));
     }
 
     @Override
     public void setCanPlay(Boolean b){
         this.canPlay = b;
+        this.clearHandSelections();
+    }
+    @Override
+    public void clearHandSelections() {
+        Platform.runLater(()->this.handCards.forEach(CardBox::unselect));
     }
 
     @Override
     public void removeCardFromField(Pair<Integer, Integer> pos) {
-
+        Platform.runLater(()->this.map.keySet()
+                .stream()
+                .filter(a->map.get(a).equals(pos))
+                .forEach(CardBox::clearImage));
     }
 
 }

@@ -14,6 +14,6 @@ public class GridFactory {
     }
 
     public GridPane handGrid(int size) {
-        return simpleSquareGrid(size);
+        return this.simpleSquareGrid(size);
     }
 }

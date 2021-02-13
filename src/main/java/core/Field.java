@@ -8,7 +8,7 @@ public interface Field {
      void fillField();
      void addCard(Pair<Integer,Integer>pos, Card c);
 
-    Optional<Card> moveCard(Card newCardImpl, Pair<Integer, Integer> newPosition);
+    Optional<Card> moveCard(Pair<Integer, Integer> newCardImpl, Pair<Integer, Integer> newPosition);
 
     Integer getSize();
 

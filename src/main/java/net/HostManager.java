@@ -26,7 +26,7 @@ public class HostManager implements Manager{
     public void action(String args) {
         System.out.println("> Starting server.");
         try {
-            this.server = new GameServer(this, 3); // CHANGE TO ARGS
+            this.server = new GameServer(this, 4); // CHANGE TO ARGS
             this.server.start();
             this.view.notifyServerStarted();
         }catch (Exception e){
@@ -53,7 +53,7 @@ public class HostManager implements Manager{
                 .map(a -> new NetPlayer(counter[0]++,"name",a, new ObjectComunicator(map.get(a).getX(),map.get(a).getY())))
                 .collect(Collectors.toList());
 
-        String path = getClass().getResource("/cards_file/napoletane.json").getFile();
+        String path = this.getClass().getResource("/cards_file/napoletane.json").getFile();
         Logic logic = new ServerLogic(new SimpleGameRules(path),players);
         logic.startGame();
 

@@ -1,59 +1,98 @@
-
   {
     "id": "1",
     "value": "napoletane",
     "seeds":[{
         "seed":"spade",
         "cards":[
-          {"id": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false"},
-          {"id": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true"},
-          {"id": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true"},
-          {"id": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false"}
+          {
+            "num": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false", "id" : "1"},
+          {
+            "num": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "2"},
+          {
+            "num": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "3"},
+          {
+            "num": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "4"},
+          {
+            "num": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "5"},
+          {
+            "num": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "6"},
+          {
+            "num": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "7"},
+          {
+            "num": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true","id" : "8"},
+          {
+            "num": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true","id" : "9"},
+          {
+            "num": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false","id" : "10"}
         ]},
       {"seed":"coppe",
       "cards":[
-        {"id": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false"},
-        {"id": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-        {"id": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-        {"id": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-        {"id": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-        {"id": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-        {"id": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-        {"id": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true"},
-        {"id": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true"},
-        {"id": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false"}
+        {
+          "num": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false", "id" : "11"},
+        {
+          "num": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "12"},
+        {
+          "num": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "13"},
+        {
+          "num": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "14"},
+        {
+          "num": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "15"},
+        {
+          "num": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "16"},
+        {
+          "num": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "17"},
+        {
+          "num": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true","id" : "18"},
+        {
+          "num": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true","id" : "19"},
+        {
+          "num": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false","id" : "20"}
         ]},
       {"seed":"denari",
         "cards":[
-          {"id": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false"},
-          {"id": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true"},
-          {"id": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true"},
-          {"id": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false"}
+          {
+            "num": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false", "id" : "21"},
+          {
+            "num": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "22"},
+          {
+            "num": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "23"},
+          {
+            "num": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "24"},
+          {
+            "num": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "25"},
+          {
+            "num": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "26"},
+          {
+            "num": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "27"},
+          {
+            "num": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true","id" : "28"},
+          {
+            "num": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true","id" : "29"},
+          {
+            "num": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false","id" : "30"}
         ]},
       {"seed":"bastoni",
         "cards":[
-          {"id": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false"},
-          {"id": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true"},
-          {"id": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true"},
-          {"id": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true"},
-          {"id": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false"}
+          {
+            "num": "1", "value": "asso", "h" : "1" , "v" :  "2", "d" : "0", "c": "true", "b": "false", "id" : "31"},
+          {
+            "num": "2", "value": "due", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "32"},
+          {
+            "num": "3", "value": "tre", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "33"},
+          {
+            "num": "4", "value": "quattro", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "34"},
+          {
+            "num": "5", "value": "cinque", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "35"},
+          {
+            "num": "6", "value": "sei", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "36"},
+          {
+            "num": "7", "value": "sette", "h" : "1" , "v" :  "1", "d" : "0", "c": "false", "b": "true","id" : "37"},
+          {
+            "num": "8", "value": "otto", "h" : "2" , "v" :  "2", "d" : "0", "c": "false", "b": "true","id" : "38"},
+          {
+            "num": "9", "value": "nove", "h" : "0" , "v" :  "0", "d" : "2", "c": "false", "b": "true","id" : "39"},
+          {
+            "num": "10", "value": "dieci", "h" : "2" , "v" :  "1", "d" : "0", "c": "true", "b": "false","id" : "40"}
         ]}
     ]
   }

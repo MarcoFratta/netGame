@@ -43,8 +43,8 @@ public class DeckBuilder {
         }
          Deck deck = null;
          try {
-             deck = new DeckImpl(deckPath.get(),size.get());
-             if(shuffle){
+             deck = new DeckImpl(this.deckPath.get(), this.size.get());
+             if(this.shuffle){
                  deck.shuffle();
              }
          } catch (IOException e) {

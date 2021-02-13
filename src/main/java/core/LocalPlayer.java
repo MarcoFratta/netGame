@@ -1,16 +1,14 @@
 package core;
 
 import core.Player;
-import net.Comunicator;
 
-import java.io.IOException;
 import java.io.Serializable;
-import java.net.Socket;
 import java.util.Objects;
 
 public class LocalPlayer implements Player, Serializable {
 
 
+    private static final long serialVersionUID = -1668034314290220957L;
     private final int id;
     private final String name;
 
@@ -32,18 +30,18 @@ public class LocalPlayer implements Player, Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (o == null || this.getClass() != o.getClass()) return false;
         LocalPlayer that = (LocalPlayer) o;
-        return id == that.id;
+        return this.id == that.id;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.id);
     }
 
     @Override
     public String toString() {
-        return String.valueOf(getId());
+        return String.valueOf(this.getId());
     }
 }
