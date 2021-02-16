@@ -30,6 +30,7 @@ public class JsonCardsLoader {
                 for(JSONObject card : (Iterable<JSONObject>) cards ){
                     boolean c = Boolean.parseBoolean((String) card.get("c"));
                     boolean b = Boolean.parseBoolean((String) card.get("b"));
+                    boolean e = Boolean.parseBoolean((String) card.get("e"));
                     int v = Integer.parseInt((String) card.get("v"));
                     int h = Integer.parseInt((String) card.get("h"));
                     int d = Integer.parseInt((String) card.get("d"));
@@ -37,7 +38,7 @@ public class JsonCardsLoader {
                     int id = Integer.parseInt((String) card.get("id"));
                     String n = (String) card.get("value");
                     URL url = Deck.class.getResource(PACKAGE+cardType+"/"+n+"_"+seed+".png");
-                    list.add(new CardImpl(seed,n,num,new Image(url.toString()),h,v,d,c,b,id));
+                    list.add(new CardImpl(seed, n, num, new Image(url.toString()), h, v, d, c, b, id, e));
                 }
             }
         } catch (Exception e) {

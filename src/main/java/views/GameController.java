@@ -3,7 +3,7 @@ package views;
 import cards.Card;
 import core.Logic;
 import core.Pair;
-import core.Result;
+import rules.Result;
 import packets.GameInfoPacket;
 
 import java.util.List;
@@ -32,4 +32,6 @@ public interface GameController {
     void removeCardFromField(Pair<Integer, Integer> pos);
 
     void clearHandSelections();
+
+    void showResultAndExit(Result result);
 }

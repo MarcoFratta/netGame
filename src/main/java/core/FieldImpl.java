@@ -6,6 +6,7 @@ import cards.Card;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class FieldImpl implements Field {
 
@@ -58,5 +59,6 @@ public class FieldImpl implements Field {
     public Optional<Card> getCard(Pair<Integer, Integer> pos) {
         return this.field.get(pos);
     }
+
 
 }

@@ -6,7 +6,12 @@ import cards.CardImpl;
 import core.LocalLogic;
 import core.Logic;
 import core.Pair;
-import core.Result;
+import javafx.geometry.Rectangle2D;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.TextInputDialog;
+import javafx.stage.Screen;
+import rules.Result;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,29 +27,37 @@ import java.util.stream.IntStream;
 
 public class GameControllerImpl implements GameController {
 
-    public static final int SIZE = 1000;
+    public static final int SIZE = 600;
+    private static final double xRatio = 0.5;
+    private static final double yRatio = 0.8;
+    private static final double xOffsetRatio = 0.4;
 
     @FXML
     public BorderPane grid;
 
-    private Map<CardBox, Pair<Integer,Integer>> map;
+    private Map<CardBox, Pair<Integer, Integer>> map;
     private LocalLogic logic;
     private List<CardBox> handCards;
     private boolean canPlay = false;
 
     @Override
-    public void create(GameInfoPacket g, Logic logic){
+    public void create(GameInfoPacket g, Logic logic) {
         GridPane fieldGrid = new GridFactory().simpleSquareGrid(SIZE);
         this.logic = (LocalLogic) logic;
-        double boxSize = SIZE/ g.getFieldSize();
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        Stage scene = (Stage) this.grid.getScene().getWindow();
+        scene.setWidth(screenBounds.getWidth() * xRatio);
+        scene.setHeight(screenBounds.getHeight() * yRatio);
+        scene.show();
+        System.out.println("Scene size -> " + scene.getWidth() + "-" + scene.getHeight());
+        double boxSize = (scene.getWidth() - (scene.getWidth() * xOffsetRatio)) / g.getFieldSize();
 
 
-
-        EventHandler<MouseEvent> fieldHandler = cell ->{
-            if(this.canPlay) {
+        EventHandler<MouseEvent> fieldHandler = cell -> {
+            if (this.canPlay) {
                 CardBox clicked = (CardBox) cell.getSource();
-                 this.logic.fieldTick(this.map.get(clicked));
-               // System.out.println("pos->" + map.get(clicked));
+                this.logic.fieldTick(this.map.get(clicked));
+                ;
             }
         };
 
@@ -82,6 +95,7 @@ public class GameControllerImpl implements GameController {
 
         this.grid.setBottom(handGrid);
     }
+
 
     public void selectHand(int position) {
         this.handCards.forEach(CardBox::unselect);
@@ -137,20 +151,38 @@ public class GameControllerImpl implements GameController {
     }
 
     @Override
-    public void setCanPlay(Boolean b){
+    public void setCanPlay(Boolean b) {
         this.canPlay = b;
         this.clearHandSelections();
     }
+
     @Override
     public void clearHandSelections() {
-        Platform.runLater(()->this.handCards.forEach(CardBox::unselect));
+        Platform.runLater(() -> this.handCards.forEach(CardBox::unselect));
+    }
+
+    @Override
+    public void showResultAndExit(Result result) {
+        Platform.runLater(() -> {
+            String res = "lose";
+            if (result.equals(Result.WIN)) {
+                res = "win";
+            }
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Information Dialog");
+            alert.setHeaderText("Game over");
+            alert.setContentText("U " + res);
+            alert.showAndWait();
+            System.exit(0);
+        });
+
     }
 
     @Override
     public void removeCardFromField(Pair<Integer, Integer> pos) {
-        Platform.runLater(()->this.map.keySet()
+        Platform.runLater(() -> this.map.keySet()
                 .stream()
-                .filter(a->map.get(a).equals(pos))
+                .filter(a -> map.get(a).equals(pos))
                 .forEach(CardBox::clearImage));
     }
 

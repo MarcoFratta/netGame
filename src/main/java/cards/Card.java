@@ -11,13 +11,15 @@ public class Card implements Serializable {
     protected final transient int number;
     protected final transient MovementManager movementManager;
     protected final int id;
+    protected final boolean canEat;
 
-    public Card(final String s,final String name, final int n, final int h ,
-                final int v , final int d, final boolean c, final boolean b,int id )
+    public Card(final String s, final String name, final int n, final int h,
+                final int v, final int d, final boolean c, final boolean b, int id, boolean e)
     {
         this.name = name;
-        this.seed =s;
-        this.number=n;
+        this.seed = s;
+        this.canEat = e;
+        this.number = n;
         this.id = id;
         this.movementManager = new MovementManager(h,v,d,c,b);
     }
@@ -27,15 +29,20 @@ public class Card implements Serializable {
     {
         return this.seed;
     }
-    public int getNumber()
-    {
+    public int getNumber() {
         return this.number;
     }
+
     public int getId() {
         return this.id;
     }
-    public MovementManager getMovementManager(){
+
+    public MovementManager getMovementManager() {
         return this.movementManager;
+    }
+
+    public boolean canEat() {
+        return this.canEat;
     }
 
     @Override
@@ -45,6 +52,7 @@ public class Card implements Serializable {
         Card card = (Card) o;
         return this.id == card.getId();
     }
+
     @Override
     public int hashCode() {
         return Objects.hash(this.seed, this.number, this.id);

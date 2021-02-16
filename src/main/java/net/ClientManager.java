@@ -22,15 +22,17 @@ public class ClientManager implements Manager {
     private final MenuController view;
     private GameClient client;
     private List<LocalPlayer> players;
+    private String name;
 
     public ClientManager(MenuController view) {
         this.view = view;
     }
 
     @Override
-    public void action(String args) {
+    public void action(String... args) {
+        this.name = args[1];
         try {
-            this.client = new GameClient(InetAddress.getByName(args), this);
+            this.client = new GameClient(InetAddress.getByName(args[0]), this);
             this.client.start();
         } catch (UnknownHostException e) {
             this.view.notifyError("No match found");
@@ -59,10 +61,12 @@ public class ClientManager implements Manager {
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    GameController view = loader.getController();
-                    view.create(p, logic);
+                    GameController controller = loader.getController();
+                    controller.create(p, logic);
                     Platform.runLater(stage::show);
-                    return view;
+                    Stage menu = (Stage) ClientManager.this.view.getScene();
+                    menu.close();
+                    return controller;
                 }
             });
             Platform.runLater(query);
@@ -72,6 +76,7 @@ public class ClientManager implements Manager {
                 e.printStackTrace();
             }
             logic.startGame();
+
         }).start();
 
 

@@ -4,7 +4,6 @@ import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 
 public class GridFactory {
-    private static final int px = 800;
 
     public GridPane simpleSquareGrid(int size){
         GridPane gridPane = new GridPane();

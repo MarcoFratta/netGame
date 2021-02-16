@@ -24,8 +24,19 @@ public class HandImpl implements Hand{
     }
 
     @Override
-    public void addCard(Card c,int pos) {
-        this.hand.add(Optional.of(c));
+    public void setCard(Card c) {
+        if (this.hand.size() != this.size) {
+            this.addCard(c);
+            return;
+        }
+        int pos = 0;
+        while (pos < this.size && this.hand.get(pos).isPresent()) {
+            pos++;
+        }
+        if (pos < this.size) {
+            this.hand.set(pos, Optional.of(c));
+        }
+
     }
 
     @Override
@@ -42,8 +53,7 @@ public class HandImpl implements Hand{
         return card.isPresent() ? this.removeCard(this.hand.indexOf(card)) : Optional.empty();
     }
 
-    @Override
-    public void addCard(Card card) {
+    private void addCard(Card card) {
         this.hand.add(Optional.of(card));
     }
 

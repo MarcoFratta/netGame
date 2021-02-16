@@ -15,4 +15,5 @@ public interface Field {
     boolean isFree(Pair<Integer, Integer> pos);
 
     Optional<Card> getCard(Pair<Integer, Integer> pos);
+
 }

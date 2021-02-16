@@ -3,6 +3,7 @@ package core;
 import cards.*;
 import packets.*;
 import rules.GameRules;
+import rules.Result;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -94,47 +95,66 @@ public class ServerLogic implements Logic {
                 } else if (packet instanceof MoveFromHandPacket) {
                     MoveFromHandPacket p = (MoveFromHandPacket) packet;
                     this.moveCardFromHand(p);
-                    if(!this.field.isFree(p.getDestPos())) {
+                    if (!this.field.isFree(p.getDestPos())) {
                         packet = new AddedFromHandPacket(this.field.getCard(p.getDestPos()).get(), p.getDestPos());
                     }
+                    this.sendNewCard();
                 } else if (packet instanceof ErrorPacket) {
                     System.out.println(((ErrorPacket) packet).getMessage());
                     break;
                 }
-                //System.out.println("t-Player before -> "+turnPlayer);
+                if (this.gameOver()) {
+                    System.out.println("GAME OVER");
+                    this.sendToAll(p -> p.equals(this.turnPlayer.get(0)) ?
+                            new GameOverPacket(Result.WIN) :
+                            new GameOverPacket(Result.LOSE));
+                }
+                System.out.println("Deck size -> " + this.deck.getLeftCardSize());
                 this.sendToAllExceptOne(this.turnPlayer.get(0), packet);
                 NetPlayer first = this.turnPlayer.remove(0);
-                this.turnPlayer.add(this.players.size()-1,first);
+                this.turnPlayer.add(this.players.size() - 1, first);
                 //System.out.println("t-Player after -> "+turnPlayer);
             }
 
         }
     }
 
+    private boolean gameOver() {
+        return this.gameRules.getWinCondition().test(this.field);
+    }
+
+    private void sendNewCard() {
+        Optional<Card> c = this.deck.drawCard();
+        c.ifPresent(card -> {
+            this.players.get(this.turnPlayer.get(0)).setCard(card);
+            this.sendToPlayer(this.turnPlayer.get(0),
+                    new HandPacket(List.of(card)));
+        });
+
+    }
+
     private void sendToAllExceptOne(NetPlayer player, Object packet) {
-        System.out.println("Server sending "+packet+" to all except->"+player);
-        this.players.keySet().stream().filter(p->!p.equals(player))
-                .forEach(p-> this.sendToPlayer(p,packet));
+        System.out.println("Server sending " + packet + " to all except->" + player);
+        this.players.keySet().stream().filter(p -> !p.equals(player))
+                .forEach(p -> this.sendToPlayer(p, packet));
     }
 
     private void moveCardFromHand(MoveFromHandPacket packet) {
         Optional<Card> cardFromHand = this.players.get(this.turnPlayer.get(0))
                 .removeCardFromId(packet.getSelectedHandCard().getId());
-        System.out.println("Received hand card ->" +cardFromHand.get().getId());
-        cardFromHand.ifPresent(c->this.field.addCard(packet.getDestPos(),cardFromHand.get()));
-        if(this.deck.getLeftCardSize() > 0){
-            this.players.get(this.turnPlayer.get(0)).addCard(this.deck.drawCard().get());
-        }
+        System.out.println("Received hand card ->" + cardFromHand.get().getId());
+        cardFromHand.ifPresent(c -> this.field.addCard(packet.getDestPos(), cardFromHand.get()));
     }
 
+
     private void moveCardFromField(MoveFromFieldPacket packet) {// cant be null
-        Optional<Card> removed = this.field.moveCard(packet.getStart(),packet.getDest());
+        Optional<Card> removed = this.field.moveCard(packet.getStart(), packet.getDest());
         removed.ifPresent(this.removedCards::add);
     }
 
 
     private void sendHands() {
-        this.sendToAll(p-> new HandPacket(this.players.get(p).getHand()
+        this.sendToAll(p -> new HandPacket(this.players.get(p).getHand()
                 .stream()
                 .map(Optional::get)
                 .collect(Collectors.toList())));
@@ -195,7 +215,7 @@ public class ServerLogic implements Logic {
         if(this.deck.getLeftCardSize() > 0)
         {
             Optional<Card> c = this.deck.drawCard();
-            c.ifPresent(card -> this.players.get(p).addCard(card));
+            c.ifPresent(card -> this.players.get(p).setCard(card));
         }
     }
     public List<Hand> getHands(){

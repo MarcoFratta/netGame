@@ -10,22 +10,27 @@ import javafx.scene.layout.StackPane;
 public class CardBox extends StackPane {
 
     public static final int padding = 10;
+    public static final double PADDING = 0.20;
     private final ImageView imageView;
 
-    public CardBox(double v){
-        System.out.println("v->"+v);
+    public CardBox(double v) {
+        System.out.println("v->" + v);
         this.setAlignment(Pos.CENTER);
-        this.setPadding(new Insets(padding,padding,padding,padding));
+        this.setPadding(new Insets(padding, padding, padding, padding));
         this.unselect();
+        super.setMaxWidth(v);
+        super.setMaxHeight(v);
+        super.setMinHeight(v);
+        super.setMinWidth(v);
 
         this.imageView = new ImageView();
         //
         // this.imageView = new ImageView(getClass().getResource("/img_carte/napoletane/asso_bastoni.png").toString());
         this.getChildren().add(this.imageView);
-        this.imageView.setFitHeight(v-(v/2));
+        this.imageView.setFitHeight(v - (v * PADDING));
         this.imageView.setPreserveRatio(true);
-        this.imageView.setFitWidth(v-(v/2));
-        //this.imageView.setStyle("-fx-alignment: CENTER");
+        this.imageView.setFitWidth(v - (v * PADDING));
+        this.imageView.setStyle("-fx-alignment: CENTER");
         super.setMaxWidth(this.imageView.getFitWidth());
         super.setMaxHeight(this.imageView.getFitHeight());
 
