@@ -22,36 +22,48 @@
          <center>
             <VBox alignment="CENTER" prefHeight="428.0" prefWidth="577.0" styleClass="background" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="54.0" prefWidth="82.0" text="Join">
-                     <styleClass>
-                        <String fx:value="label" />
-                        <String fx:value="buttons" />
-                     </styleClass>
-                     <VBox.margin>
-                        <Insets bottom="20.0" />
-                     </VBox.margin></Button>
-                  <Button fx:id="hostButton" mnemonicParsing="false" onAction="#host" text="host">
-                     <styleClass>
-                        <String fx:value="buttons" />
-                        <String fx:value="label" />
-                     </styleClass></Button>
+                   <Button fx:id="pathLoader" mnemonicParsing="false" onAction="#path" text="Deck">
+                       <styleClass>
+                           <String fx:value="buttons"/>
+                           <String fx:value="label"/>
+                       </styleClass>
+                       <VBox.margin>
+                           <Insets bottom="20.0"/>
+                       </VBox.margin>
+                   </Button>
+                   <Button fx:id="joinButton" mnemonicParsing="false" onAction="#join" prefHeight="54.0"
+                           prefWidth="82.0" text="Join">
+                       <styleClass>
+                           <String fx:value="label"/>
+                           <String fx:value="buttons"/>
+                       </styleClass>
+                       <VBox.margin>
+                           <Insets bottom="20.0"/>
+                       </VBox.margin>
+                   </Button>
+                   <Button fx:id="hostButton" mnemonicParsing="false" onAction="#host" text="host">
+                       <styleClass>
+                           <String fx:value="buttons"/>
+                           <String fx:value="label"/>
+                       </styleClass>
+                   </Button>
                </children>
             </VBox>
          </center>
-         <top>
-            <Label fx:id="numPlayerBox" text="3 players connected" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets top="20.0" />
-               </BorderPane.margin>
-            </Label>
-         </top>
-         <bottom>
-            <Label fx:id="ipBox" text="36.24.0.1" BorderPane.alignment="CENTER">
-               <BorderPane.margin>
-                  <Insets bottom="20.0" />
-               </BorderPane.margin>
-            </Label>
-         </bottom>
+          <top>
+              <Label fx:id="numPlayerBox" text="3 Players connected" BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                      <Insets top="20.0"/>
+                  </BorderPane.margin>
+              </Label>
+          </top>
+          <bottom>
+              <Label fx:id="ipBox" text="36.24.0.1" BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                      <Insets bottom="20.0"/>
+                  </BorderPane.margin>
+              </Label>
+          </bottom>
       </BorderPane>
    </children>
 </GridPane>

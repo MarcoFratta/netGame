@@ -21,7 +21,7 @@
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="module-info" target="15" />
-      <module name="netGame" target="15" />
+      <module name="netGame" target="11" />
     </bytecodeTargetLevel>
   </component>
 </project>

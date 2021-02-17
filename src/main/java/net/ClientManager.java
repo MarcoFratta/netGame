@@ -23,6 +23,7 @@ public class ClientManager implements Manager {
     private GameClient client;
     private List<LocalPlayer> players;
     private String name;
+    private String path;
 
     public ClientManager(MenuController view) {
         this.view = view;
@@ -31,6 +32,7 @@ public class ClientManager implements Manager {
     @Override
     public void action(String... args) {
         this.name = args[1];
+        this.path = args[2];
         try {
             this.client = new GameClient(InetAddress.getByName(args[0]), this);
             this.client.start();
@@ -47,7 +49,7 @@ public class ClientManager implements Manager {
     public void startMatch(GameInfoPacket p, ObjectInputStream i, ObjectOutputStream o) {
         this.players = p.getPlayers();
         Comunicator server = new ObjectComunicator(i, o);
-        LocalLogic logic = new LocalLogic(p, server);
+        LocalLogic logic = new LocalLogic(p, server, this.path);
         new Thread(()-> {
             final FutureTask<GameController> query = new FutureTask<>(new Callable<>() {
                 @Override
@@ -63,6 +65,10 @@ public class ClientManager implements Manager {
                     }
                     GameController controller = loader.getController();
                     controller.create(p, logic);
+                    stage.setOnCloseRequest(e -> {
+                        Platform.exit();
+                        System.exit(0);
+                    });
                     Platform.runLater(stage::show);
                     Stage menu = (Stage) ClientManager.this.view.getScene();
                     menu.close();

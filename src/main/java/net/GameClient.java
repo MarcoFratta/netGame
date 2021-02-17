@@ -11,10 +11,9 @@ import java.net.Socket;
 
 public class GameClient extends Thread{
 
-    private static final int port = 5005;
+    private static final int port = 25565;
     private final InetAddress address;
 
-    private Socket serverSocket;
     private ObjectInputStream input;
     private ObjectOutputStream output;
 
@@ -51,10 +50,10 @@ public class GameClient extends Thread{
 
     private void connect() throws IOException {
 
-        this.serverSocket = new Socket(this.address,port);
-        this.output = new ObjectOutputStream(this.serverSocket.getOutputStream());
-        this.input = new ObjectInputStream(this.serverSocket.getInputStream());
-            System.out.println("Connessione riuscita");
+        Socket serverSocket = new Socket(this.address, port);
+        this.output = new ObjectOutputStream(serverSocket.getOutputStream());
+        this.input = new ObjectInputStream(serverSocket.getInputStream());
+        System.out.println("Connessione riuscita");
 
     }
 }

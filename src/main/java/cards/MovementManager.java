@@ -47,19 +47,19 @@ public class MovementManager {
 
     public List<Pair<Integer, Integer>> getDestinations(State state, Pair<Integer, Integer> start, int size) {
         switch (state) {
-            case HAND -> {
+            case HAND:
                 List<Pair<Integer, Integer>> res = new ArrayList<>();
                 IntStream.range(0, size).forEach(i -> IntStream.range(0, size)
                         .forEach(j -> res.add(new Pair<>(i, j))));
                 return res.stream().filter(a -> this.condition.getCondition().test(a, size)).collect(Collectors.toList());
-            }
-            case FIELD -> {
+
+            case FIELD:
                 this.movements.forEach(System.out::println);
                 return this.fromMovements(start).stream()
                         .filter(p -> (p.getX() >= 0 && p.getX() < size) &&
                                 (p.getY() >= 0 && p.getY() < size))
                         .peek(System.out::println).collect(Collectors.toList());
-            }
+
         }
         return null;
     }

@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class GameServer extends Thread {
 
-    public static final int port = 5005;
+    public static final int port = 25565;
 
     private  ServerSocket serverSocket;
     private final Map<Socket, Pair<ObjectInputStream,ObjectOutputStream>> clientSockets;
@@ -26,35 +26,37 @@ public class GameServer extends Thread {
 
     @Override
     public void run() {
-        this.create();
+        try {
+            this.create();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
         this.waitForClient();
-        if(this.clientSockets.size() == this.clientsNumber){
+        if (this.clientSockets.size() == this.clientsNumber) {
             this.manager.startMatch(Map.copyOf(this.clientSockets));
         }
     }
 
-    private void create(){
-        try {
-            this.serverSocket = new ServerSocket(port);
-           // serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(),port));
-            System.out.println("Server created -> " + this.serverSocket.getInetAddress()+" "+ this.serverSocket.getLocalPort());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void create() throws IOException {
+
+        this.serverSocket = new ServerSocket();
+        this.serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), port));
+        System.out.println("Server created -> " + this.serverSocket.getInetAddress() + " " + this.serverSocket.getLocalPort());
     }
 
     private void waitForClient() {
         System.out.println("Server in ascolto..");
         while (this.clientSockets.size() < this.clientsNumber && !this.stopped) {
             try {
-                    Socket clientSocket = this.serverSocket.accept();
-                    System.out.println("client connected ["+ this.clientSockets.size()+"]" + clientSocket);
-                    InputStream inputStream = clientSocket.getInputStream();
-                    OutputStream outputStream = clientSocket.getOutputStream();
-                    ObjectInputStream i = new ObjectInputStream(inputStream);
-                    ObjectOutputStream o = new ObjectOutputStream(outputStream);
-                this.clientSockets.put(clientSocket,new Pair<>(i,o));
-                    this.manager.playerConnected(this.clientSockets.size());
+                Socket clientSocket = this.serverSocket.accept();
+                System.out.println("client connected [" + this.clientSockets.size() + "]" + clientSocket);
+                InputStream inputStream = clientSocket.getInputStream();
+                OutputStream outputStream = clientSocket.getOutputStream();
+                ObjectInputStream i = new ObjectInputStream(inputStream);
+                ObjectOutputStream o = new ObjectOutputStream(outputStream);
+                this.clientSockets.put(clientSocket, new Pair<>(i, o));
+                this.manager.playerConnected(this.clientSockets.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Client non connected");

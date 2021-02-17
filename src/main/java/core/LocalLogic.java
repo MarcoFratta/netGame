@@ -28,20 +28,23 @@ public class LocalLogic implements Logic {
     private Pair<Integer,Integer> selectedFieldCard;
     private int selectedHandCard = NO_HAND_SELECTED;
 
-    public LocalLogic(GameInfoPacket packet,Comunicator server) {
+    public LocalLogic(GameInfoPacket packet, Comunicator server, String path) {
         this.players = packet.getPlayers();
         this.server = server;
         this.removedCards = new ArrayList<>();
         try {
             this.player = this.players.stream().filter(p -> p.getId() == packet.getDestPlayerId())
                     .findAny().get();
-        }catch (NoSuchElementException e){
+        } catch (NoSuchElementException e) {
             server.send(new ErrorPacket("id error"));
         }
-        try{
-            String path = this.getClass().getResource(CARDS_PACKAGE +packet.getDeckType()+ FILE_TYPE).getFile();
-            this.deck = new DeckImpl(path, packet.getDeckSize());
-        }catch (Exception e){
+        try {
+            //String path = this.getClass().getResource(CARDS_PACKAGE +packet.getDeckType()+ FILE_TYPE).getFile();
+            this.deck = new DeckBuilder()
+                    .path(path)
+                    .size(packet.getDeckSize())
+                    .build();
+        } catch (Exception e) {
             server.send(new ErrorPacket("deck error"));
             throw new IllegalArgumentException();
         }
