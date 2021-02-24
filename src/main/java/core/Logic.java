@@ -6,4 +6,5 @@ import java.util.Optional;
 
 public interface Logic {
     void startGame();
+
 }

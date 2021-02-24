@@ -42,6 +42,7 @@ public class Card implements Serializable {
     }
 
     public boolean canEat() {
+        System.out.println("Can eat ->" + canEat);
         return this.canEat;
     }
 

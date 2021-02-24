@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class GameServer extends Thread {
 
-    public static final int port = 25565;
+    public static final int port = 9009;
 
     private  ServerSocket serverSocket;
     private final Map<Socket, Pair<ObjectInputStream,ObjectOutputStream>> clientSockets;
@@ -40,8 +40,8 @@ public class GameServer extends Thread {
 
     private void create() throws IOException {
 
-        this.serverSocket = new ServerSocket();
-        this.serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), port));
+        this.serverSocket = new ServerSocket(port);
+        //this.serverSocket.bind(new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), port));
         System.out.println("Server created -> " + this.serverSocket.getInetAddress() + " " + this.serverSocket.getLocalPort());
     }
 

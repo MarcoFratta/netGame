@@ -1,21 +1,63 @@
-.label{
+.label {
     -fx-text-fill: beige;
     -fx-font-size: 25px;
     -fx-background-color: transparent;
 }
-.background{
-    -fx-background-color: darkslategray;
+
+.text-field {
+    -fx-border-color: #e383fd;
+    -fx-text-fill: beige;
+    -fx-font-size: 18px;
+    -fx-background-color: transparent;
 }
-.buttons{
-    -fx-border-color: lightseagreen;
+
+.check-box .box {
+
+    -fx-background-color: transparent;
+    -fx-border-radius: 3px;
 }
-.grid{
+
+.background {
+    -fx-background-color: #202124;
+}
+
+.button {
+    -fx-border-color: #e383fd;
+}
+
+.grid {
     -fx-alignment: center;
     -fx-background-color: beige;
 }
-.imageView{
+
+.imageView {
     -fx-alignment: center;
 }
-.pane{
+
+.pane {
     -fx-alignment: center;
+}
+
+.cardBox {
+    -fx-border-width: 3 3 2 1;
+}
+
+.combo-box .cell {
+    -fx-text-fill: beige;
+
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: transparent;
+    -fx-text-fill: beige;
+}
+
+.combo-box-popup .list-view .list-cell {
+    -fx-background-color: #202124;
+    -fx-border-color: #e383fd;
+    -fx-text-fill: beige;
+}
+
+.combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: #887799;
 }

@@ -6,16 +6,19 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
-public class Main extends Application {
+public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(this.getClass().getResource("/layouts/startMenu.fxml"));
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/layouts/startMenu.fxml"));
+        Parent root = loader.load();
         primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 300, 275));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.getIcons().add(new Image(App.class.getResourceAsStream("/guru.png")));
         primaryStage.show();
         primaryStage.setOnCloseRequest(e -> {
             Platform.exit();

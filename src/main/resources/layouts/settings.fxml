@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="511.0"
+            prefWidth="600.0" styleClass="background" stylesheets="@style.css" xmlns="http://javafx.com/javafx/15.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.SettingsController">
+    <bottom>
+        <Pane prefHeight="90.0" prefWidth="600.0" BorderPane.alignment="CENTER"/>
+    </bottom>
+    <top>
+        <VBox alignment="CENTER" prefHeight="90.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+            <children>
+                <Label text="Settings"/>
+            </children>
+        </VBox>
+    </top>
+    <center>
+        <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER_LEFT" prefHeight="406.0" prefWidth="434.0">
+                    <children>
+                        <Label text="Players number:"/>
+                        <Label text="Hand size:">
+                            <VBox.margin>
+                                <Insets top="25.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <Label text="Field size:">
+                            <VBox.margin>
+                                <Insets top="25.0"/>
+                            </VBox.margin>
+                        </Label>
+                        <Label text="Deck size:">
+                            <VBox.margin>
+                                <Insets top="25.0"/>
+                            </VBox.margin>
+                        </Label>
+                    </children>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </VBox>
+                <VBox alignment="CENTER" prefHeight="406.0" prefWidth="292.0">
+                    <children>
+                        <TextField fx:id="playersNum" onAction="#setPlayersNum" promptText="4" text="2">
+                            <styleClass>
+                                <String fx:value="button"/>
+                                <String fx:value="label"/>
+                            </styleClass>
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                        </TextField>
+                        <TextField fx:id="handSize" layoutX="10.0" layoutY="10.0" onAction="#setHandSize"
+                                   prefHeight="0.0" prefWidth="98.0" promptText="5">
+                            <styleClass>
+                                <String fx:value="button"/>
+                                <String fx:value="label"/>
+                            </styleClass>
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="fieldSize" layoutX="10.0" layoutY="51.0" onAction="#setFieldSize"
+                                   prefHeight="0.0" prefWidth="98.0" promptText="4">
+                            <styleClass>
+                                <String fx:value="button"/>
+                                <String fx:value="label"/>
+                            </styleClass>
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+                        <TextField fx:id="deckSize" layoutX="10.0" layoutY="92.0" onAction="#setDeckSize"
+                                   prefHeight="41.0" prefWidth="113.0" promptText="4" text="40">
+                            <styleClass>
+                                <String fx:value="button"/>
+                                <String fx:value="label"/>
+                            </styleClass>
+                            <font>
+                                <Font size="10.0"/>
+                            </font>
+                            <VBox.margin>
+                                <Insets top="20.0"/>
+                            </VBox.margin>
+                        </TextField>
+                    </children>
+                    <HBox.margin>
+                        <Insets/>
+                    </HBox.margin>
+                </VBox>
+            </children>
+        </HBox>
+    </center>
+    <left>
+        <VBox prefHeight="406.0" prefWidth="120.0" BorderPane.alignment="CENTER"/>
+    </left>
+    <right>
+        <VBox prefHeight="406.0" prefWidth="120.0" BorderPane.alignment="CENTER"/>
+    </right>
+</BorderPane>

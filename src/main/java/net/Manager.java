@@ -1,7 +1,8 @@
 package net;
 
+
 public interface Manager {
-    void action(String... args);
+    void action(Object... args);
 
     void stopAction();
 }

@@ -66,7 +66,8 @@ public class LocalLogic implements Logic {
         if (p.isEmpty()) {
             return true;
         }
-        return p.get().canEat() && (!card.getSeed().equals(p.get().getSeed()));
+        // System.out.println("Moving from "+card+"("+card.canEat()+") to "+p.get());
+        return card.canEat() && (!card.getSeed().equals(p.get().getSeed()));
     }
 
     private void showHand() {
@@ -86,19 +87,25 @@ public class LocalLogic implements Logic {
     }
 
     public void handTick(int pos) {
-        if(this.selectedHandCard!=pos) {
+        if (this.selectedHandCard != pos) {
             this.selectedHandCard = pos;
             this.unSelectField();
             this.controller.selectHand(pos);
-            this.controller.clearFieldSelections();
+            // this.controller.clearFieldSelections();
             this.hand.getHand().get(this.selectedHandCard).ifPresent(c -> this.controller.selectCells(this.getValidCells(State.HAND)));
         } else {
-            this.unselectedHand();
-            this.unSelectField();
-            this.controller.clearHandSelections();
+            this.clearAllSelections();
         }
     }
-    public void unselectedHand(){
+
+    private void clearAllSelections() {
+        this.unselectedHand();
+        this.unSelectField();
+        this.controller.clearHandSelections();
+        this.controller.clearFieldSelections();
+    }
+
+    public void unselectedHand() {
         this.selectedHandCard = NO_HAND_SELECTED;
     }
 
@@ -173,13 +180,14 @@ public class LocalLogic implements Logic {
                         .filter(this.field::isFree)
                         .collect(Collectors.toList());
             } else if(state.equals(State.FIELD)) {
-                List<Pair<Integer, Integer>> selectedCells = new ArrayList<>();
-                selectedCells.add(this.selectedFieldCard);
-                selectedCells.addAll(this.field.getCard(this.selectedFieldCard).get()
+                List<Pair<Integer, Integer>> selectedCells;
+                selectedCells = (this.field.getCard(this.selectedFieldCard).get()
                         .getMovementManager().getDestinations(state, this.selectedFieldCard, this.field.getSize()));
-                return selectedCells.stream()
+                selectedCells = selectedCells.stream()
                         .filter(p -> this.canEat(this.field.getCard(this.selectedFieldCard).get(),
                                 this.field.getCard(p))).collect(Collectors.toList());
+                selectedCells.add(this.selectedFieldCard);
+                return selectedCells;
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -217,16 +225,12 @@ public class LocalLogic implements Logic {
         }
         }, "Player" + this.player).start();
     }
-
     private void endMatch(Result result) {
         this.controller.showResultAndExit(result);
     }
-
     private void addCardsToHand(List<Card> cards) {
         cards.forEach(c -> this.hand.setCard(this.deck.drawCard(c.getId()).get()));
     }
-
-
     private boolean isValid(Pair<Integer, Integer> dest, State state) {
         if (state.equals(State.HAND)) {
             return (this.field.isFree(dest) &&
@@ -240,8 +244,16 @@ public class LocalLogic implements Logic {
         }
         return false;
     }
+
     public void setController(GameController view) {
-        System.out.println("Controller set"+view);
+        System.out.println("Controller set" + view);
         this.controller = view;
+    }
+
+    public void sort() {
+        this.clearAllSelections();
+        this.hand.getHand().sort((a, b) -> a.isEmpty() ? -1 :
+                (b.isEmpty()) ? 1 : a.get().getNumber() - b.get().getNumber());
+        this.showHand();
     }
 }

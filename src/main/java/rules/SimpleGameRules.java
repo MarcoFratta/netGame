@@ -1,5 +1,6 @@
 package rules;
 
+import cards.DeckLoader;
 import core.NetPlayer;
 import core.Pair;
 import core.Player;
@@ -15,11 +16,6 @@ import java.util.stream.Stream;
 
 public class SimpleGameRules implements GameRules{
 
-    public static final int DEF_MIN_PLAYERS = 2;
-    public static final int DEF_MAX_PLAYERS = 4;
-    public static final int DEF_HAND_SIZE = 5;
-    public static final int DEF_FIELD_SIZE = 4;
-    public static final int DEF_DECK_SIZE = 40;
 
     private final WinCondition winCondition;
     private final int maxPlayers,minPlayers,handSize,deckSize,fieldSize;
@@ -31,7 +27,7 @@ public class SimpleGameRules implements GameRules{
         this.maxPlayers = maxPlayers;
         this.minPlayers = minPlayers;
         this.handSize = handSize;
-        this.deckPath = deckPath;
+        this.deckPath = new DeckLoader().getJsonFilePath(deckPath);
         this.deckSize = deckSize;
         this.fieldSize = fieldSize;
         this.firstPlayer = function;
@@ -63,9 +59,6 @@ public class SimpleGameRules implements GameRules{
         };
     }
 
-    public SimpleGameRules(String deckPath) {
-        this(DEF_MAX_PLAYERS, DEF_MIN_PLAYERS, DEF_HAND_SIZE, deckPath, DEF_DECK_SIZE, DEF_FIELD_SIZE, l -> l.get(0));
-    }
 
     @Override
     public WinCondition getWinCondition() {
@@ -81,12 +74,10 @@ public class SimpleGameRules implements GameRules{
     public int getMaxPLayers() {
         return this.maxPlayers;
     }
-
     @Override
     public int getMinPLayers() {
         return this.minPlayers;
     }
-
     @Override
     public int getDeckSize() {
         return this.deckSize;
@@ -105,5 +96,17 @@ public class SimpleGameRules implements GameRules{
     @Override
     public int getFieldSize() {
         return this.fieldSize;
+    }
+
+    @Override
+    public String toString() {
+        return "SimpleGameRules{" +
+                "maxPlayers=" + maxPlayers +
+                ", minPlayers=" + minPlayers +
+                ", handSize=" + handSize +
+                ", deckSize=" + deckSize +
+                ", fieldSize=" + fieldSize +
+                ", deckPath='" + deckPath + '\'' +
+                '}';
     }
 }

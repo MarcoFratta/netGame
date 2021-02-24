@@ -1,6 +1,7 @@
 package net;
 
 
+import packets.ErrorPacket;
 import packets.GameInfoPacket;
 
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.net.Socket;
 
 public class GameClient extends Thread{
 
-    private static final int port = 25565;
+    private static final int port = 9009;
     private final InetAddress address;
 
     private ObjectInputStream input;
@@ -55,5 +56,15 @@ public class GameClient extends Thread{
         this.input = new ObjectInputStream(serverSocket.getInputStream());
         System.out.println("Connessione riuscita");
 
+    }
+
+    public void stopServer() {
+        try {
+            this.output.writeObject(new ErrorPacket("no Deck"));
+            this.output.close();
+            this.output.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
